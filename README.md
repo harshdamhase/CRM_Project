@@ -360,6 +360,19 @@ The technical development focused on extending Business Central functionality wh
 
 ---
 
+## Screenshots
+
+<img width="1366" height="727" alt="image" src="https://github.com/user-attachments/assets/5b92f51c-dc05-4dbf-9519-00651f3211e4" />
+
+<img width="1364" height="653" alt="image" src="https://github.com/user-attachments/assets/e08520d1-e796-4481-9ae6-9823f4231bb7" />
+
+<img width="1342" height="679" alt="image" src="https://github.com/user-attachments/assets/6f5dd999-31d0-47bb-b596-c1ef2a68254b" />
+
+<img width="1359" height="687" alt="image" src="https://github.com/user-attachments/assets/29bec61d-71bc-441e-9c8f-83a50d97cd5d" />
+
+
+
+
 ## Author
 
 **Harshda Mhase**
