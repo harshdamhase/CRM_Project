@@ -370,7 +370,17 @@ The technical development focused on extending Business Central functionality wh
 
 <img width="1359" height="687" alt="image" src="https://github.com/user-attachments/assets/29bec61d-71bc-441e-9c8f-83a50d97cd5d" />
 
+<img width="1364" height="694" alt="image" src="https://github.com/user-attachments/assets/e3e29054-4d95-4156-a4ee-a562cd85a4a9" />
 
+<img width="1365" height="687" alt="image" src="https://github.com/user-attachments/assets/6f0d8fe5-832d-4243-a547-73328ad92d51" />
+
+<img width="1362" height="667" alt="image" src="https://github.com/user-attachments/assets/31c7c6c2-1594-48e4-a1b8-25133e48ca89" />
+
+<img width="1335" height="666" alt="image" src="https://github.com/user-attachments/assets/cf86b82c-c9e6-48b3-8e93-b6493452695c" />
+
+<img width="1364" height="661" alt="image" src="https://github.com/user-attachments/assets/49fae6f8-bddd-4699-bbc0-addce37e849d" />
+
+<img width="1323" height="674" alt="image" src="https://github.com/user-attachments/assets/458fe680-666c-4172-a821-61fd7d47e80f" />
 
 
 ## Author
