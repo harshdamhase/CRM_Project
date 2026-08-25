@@ -28,7 +28,7 @@ Sales Order / Closure
 
 ## Modules
 
-### 1. Lead Management
+### 1️⃣ 🎯Lead Management
 
 The Lead Management module manages potential customers before they move to the next stage of the sales process.
 
@@ -57,7 +57,7 @@ The Lead Management module manages potential customers before they move to the n
 
 ---
 
-### 2. Contact Management
+### 2️⃣ 👥 Contact Management
 
 The Contact Management module maintains customer and contact information in a centralized location.
 
@@ -83,7 +83,7 @@ Developed/extended functionality includes:
 
 ---
 
-### 3. Customer Interaction
+### 3️⃣ 💬 Customer Interaction
 
 The Customer Interaction module maintains customer communication and interaction history.
 
@@ -113,7 +113,7 @@ The Customer Interaction module maintains customer communication and interaction
 
 ---
 
-### 4. Opportunity Management
+### 4️⃣ 💼 Opportunity Management
 
 The Opportunity Management module manages and tracks potential sales after lead qualification.
 
@@ -157,7 +157,7 @@ A competitor tracking section was developed with:
 
 ---
 
-### 5. Sales Activity Management
+### 5️⃣ 📅 Sales Activity Management
 
 Sales Activity Management supports the planning and tracking of sales activities and follow-ups.
 
@@ -185,7 +185,7 @@ Provides reminders for scheduled activities and follow-ups to help users avoid m
 
 ---
 
-### 6. Quotation Management
+### 6️⃣ 📄  Quotation Management
 
 Quotation Management supports the sales quotation process from creation through customer acceptance and conversion to a Sales Order.
 
@@ -217,7 +217,7 @@ Sales Order Processing
 
 ---
 
-### 7. Customer Communication
+### 7️⃣ 📧 Customer Communication
 
 Customer Communication supports communication between sales users and customers.
 
