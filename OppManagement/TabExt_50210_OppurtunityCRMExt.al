@@ -38,23 +38,43 @@ tableextension 50210 "Oppurtunity CRM EXT" extends Opportunity
         {
             Caption = 'Won Date';
             DataClassification = CustomerContent;
+            Editable = false;
         }
-
         field(50127; "Lost Date"; Date)
         {
             Caption = 'Lost Date';
             DataClassification = CustomerContent;
+            Editable = false;
         }
-
         field(50128; "CRM Oppurtunity Stage"; Enum "Oppurtunity Stage")
         {
             Caption = 'CRM Opportunity Stage';
             DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                case "CRM Oppurtunity Stage" of
+                    "CRM Oppurtunity Stage"::Won:
+                        begin
+                            "Won Date" := WorkDate();
+                            "Lost Date" := 0D;
+                        end;
+                    "CRM Oppurtunity Stage"::Lost:
+                        begin
+                            "Lost Date" := WorkDate();
+                            "Won Date" := 0D;
+                        end;
+                    else begin
+                        "Won Date" := 0D;
+                        "Lost Date" := 0D;
+                    end;
+                end;
+            end;
         }
 
-        field(50129; "Probablitiy %"; Decimal)
+        field(50129; "CRM Probability %"; Decimal)
         {
-            Caption = 'Probability %';
+            Caption = 'CRM Probability %';
             MinValue = 0;
             MaxValue = 100;
             DataClassification = CustomerContent;
@@ -62,5 +82,3 @@ tableextension 50210 "Oppurtunity CRM EXT" extends Opportunity
     }
 
 }
-
-

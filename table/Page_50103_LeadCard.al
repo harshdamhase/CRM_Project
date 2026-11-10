@@ -335,7 +335,7 @@ page 50103 "Lead Card"
 
                     ActivityRec."Activity Type" := ActivityRec."Activity Type"::"Follow-Up";
 
-                    ActivityRec."Activity Date" := Today;
+                    ActivityRec."Activity Date" := Rec."Next Follow-Up Date";
 
 
                     ActivityRec.Subject := 'Lead Follow-Up';
@@ -377,6 +377,7 @@ page 50103 "Lead Card"
                         "Lead No.",
                         Rec."Lead No.");
 
+                    ActivityList.SetTableView(ActivityRec);
                     ActivityList.RunModal();
                 end;
             }

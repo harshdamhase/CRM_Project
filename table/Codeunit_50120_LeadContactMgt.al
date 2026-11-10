@@ -35,7 +35,16 @@ codeunit 50120 "Lead Contact Management"
         Contact."No." := ContactNo;
 
         // Copy Lead information to Contact
-        Contact.Validate(Name, Lead."Contact Person");
+        if Lead."Contact Person" <> '' then
+            Contact.Validate(Name, Lead."Contact Person")
+        else
+            if Lead."Lead Name" <> '' then
+                Contact.Validate(Name, Lead."Lead Name")
+            else
+                if Lead."Company Name" <> '' then
+                    Contact.Validate(Name, Lead."Company Name")
+                else
+                    Error('Enter a lead name, company name, or contact person before creating a contact.');
 
 
         Contact.Validate("Phone No.", Lead."Phone No.");

@@ -177,11 +177,17 @@ The following functionality was specifically developed:
 
 #### Sales Calendar
 
-Provides a centralized view of scheduled sales activities based on activity dates.
+Provides a month view of scheduled activities for dates within one year of the Business Central work date. Selecting an event opens its activity card; users can move between months and see the activity type, time, and status.
+
+Activity cards support editing scheduled activity details, completing or cancelling an activity, and validating due dates. Completing a follow-up updates the linked lead or opportunity with its next open follow-up.
+
+#### Customer Interaction Timeline
+
+Customer interactions are synchronized to the customer timeline on create, update, and delete. The timeline opens the source interaction, and interaction records can be marked completed or cancelled.
 
 #### Reminder Notifications
 
-Provides reminders for scheduled activities and follow-ups to help users avoid missing planned actions.
+Follow-up dates are tracked on leads and opportunities and shown on the sales calendar. This extension does not currently send automatic push or email reminders.
 
 ---
 

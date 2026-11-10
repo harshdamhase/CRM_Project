@@ -48,6 +48,7 @@ page 50110 "Customer Interactions List"
                 field("Interaction Status"; Rec."CRM Interaction Type")
                 {
                     ApplicationArea = All;
+                    Editable = false;
                 }
 
                 field("Follow-up Required"; Rec."Follow-up Required")
@@ -77,6 +78,44 @@ page 50110 "Customer Interactions List"
 
                 RunObject = page "Customer Interaction Card";
 
+            }
+
+            action(MarkCompleted)
+            {
+                Caption = 'Mark Completed';
+                ApplicationArea = All;
+                Image = Approve;
+
+                trigger OnAction()
+                begin
+                    if Rec."CRM Interaction Type" = Rec."CRM Interaction Type"::Cancelled then
+                        Error('Cancelled interactions cannot be completed.');
+                    if Rec."CRM Interaction Type" = Rec."CRM Interaction Type"::Completed then
+                        Error('This interaction is already completed.');
+
+                    Rec."CRM Interaction Type" := Rec."CRM Interaction Type"::Completed;
+                    Rec.Modify(true);
+                    CurrPage.Update(false);
+                end;
+            }
+
+            action(CancelInteraction)
+            {
+                Caption = 'Cancel Interaction';
+                ApplicationArea = All;
+                Image = Cancel;
+
+                trigger OnAction()
+                begin
+                    if Rec."CRM Interaction Type" = Rec."CRM Interaction Type"::Completed then
+                        Error('Completed interactions cannot be cancelled.');
+                    if Rec."CRM Interaction Type" = Rec."CRM Interaction Type"::Cancelled then
+                        Error('This interaction is already cancelled.');
+
+                    Rec."CRM Interaction Type" := Rec."CRM Interaction Type"::Cancelled;
+                    Rec.Modify(true);
+                    CurrPage.Update(false);
+                end;
             }
         }
     }

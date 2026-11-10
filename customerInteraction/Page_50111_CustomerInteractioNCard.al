@@ -37,6 +37,12 @@ page 50111 "Customer Interaction Card"
                     ApplicationArea = All;
                 }
 
+                field("Interaction Status"; Rec."CRM Interaction Type")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+
                 field("Interaction Type"; Rec."Interaction Type")
                 {
                     ApplicationArea = All;
@@ -134,7 +140,30 @@ page 50111 "Customer Interaction Card"
 
                 trigger OnAction()
                 begin
-                    //   Rec.Status := Rec.Status::Completed;
+                    if Rec."CRM Interaction Type" = Rec."CRM Interaction Type"::Cancelled then
+                        Error('Cancelled interactions cannot be completed.');
+                    if Rec."CRM Interaction Type" = Rec."CRM Interaction Type"::Completed then
+                        Error('This interaction is already completed.');
+
+                    Rec."CRM Interaction Type" := Rec."CRM Interaction Type"::Completed;
+                    Rec.Modify(true);
+                end;
+            }
+
+            action(CancelInteraction)
+            {
+                Caption = 'Cancel Interaction';
+                ApplicationArea = All;
+                Image = Cancel;
+
+                trigger OnAction()
+                begin
+                    if Rec."CRM Interaction Type" = Rec."CRM Interaction Type"::Completed then
+                        Error('Completed interactions cannot be cancelled.');
+                    if Rec."CRM Interaction Type" = Rec."CRM Interaction Type"::Cancelled then
+                        Error('This interaction is already cancelled.');
+
+                    Rec."CRM Interaction Type" := Rec."CRM Interaction Type"::Cancelled;
                     Rec.Modify(true);
                 end;
             }
@@ -146,9 +175,7 @@ page 50111 "Customer Interaction Card"
 
                 trigger OnAction()
                 begin
-                    Run(Page::"Customer Interaction Card");
-
-
+                    Page.Run(Page::"Customer Interaction Card");
                 end;
             }
             action(ActivityTimeline)
@@ -157,8 +184,8 @@ page 50111 "Customer Interaction Card"
                 ApplicationArea = All;
                 Image = History;
 
-                RunObject = page "Activity Timeline";
-                RunPageLink = "Activity No." = field("Customer No");
+                RunObject = page "CRM Activity Timeline";
+                RunPageLink = "Customer No" = field("Customer No");
             }
         }
     }

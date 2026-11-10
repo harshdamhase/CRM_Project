@@ -5,5 +5,7 @@ enum 50111 "Activity Source Type"
     value(0; " ")
     {
     }
-
+    value(1; "Customer Interaction")
+    {
+    }
 }

@@ -5,7 +5,7 @@ enum 50112 "CRM Interaction Status"
     value(0; Planned)
     {
     }
-    value(1; COmpleted)
+    value(1; Completed)
     {
 
     }

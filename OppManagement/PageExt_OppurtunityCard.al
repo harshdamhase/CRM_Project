@@ -8,7 +8,7 @@ pageextension 50210 "Opportunity CRM Page Ext" extends "Opportunity Card"
             {
                 Caption = 'CRM Opportunity Information';
 
-                field("Probability %"; Rec."Probability %")
+                field("CRM Probability %"; Rec."CRM Probability %")
                 {
                     ApplicationArea = All;
                 }
@@ -24,6 +24,16 @@ pageextension 50210 "Opportunity CRM Page Ext" extends "Opportunity Card"
                 }
 
                 field("CRM Oppurtunity Stage"; Rec."CRM Oppurtunity Stage")
+                {
+                    ApplicationArea = All;
+                }
+
+                field("Won Date"; Rec."Won Date")
+                {
+                    ApplicationArea = All;
+                }
+
+                field("Lost Date"; Rec."Lost Date")
                 {
                     ApplicationArea = All;
                 }
@@ -56,8 +66,7 @@ pageextension 50210 "Opportunity CRM Page Ext" extends "Opportunity Card"
                 {
                     ApplicationArea = All;
 
-                    SubPageLink =
-                        "Oppurtunty No" = field("No.");
+                    SubPageLink = "Oppurtunty No" = field("No.");
                 }
             }
         }
@@ -83,7 +92,7 @@ pageextension 50210 "Opportunity CRM Page Ext" extends "Opportunity Card"
                     Rec.TestField("Next Follow-up Date");
 
                     // 2. Check follow-up date is not in the past
-                    if Rec."Next Follow-up Date" < Today then
+                    if Rec."Next Follow-up Date" < WorkDate() then
                         Error(
                             'Next Follow-up Date cannot be in the past.');
 
@@ -93,13 +102,25 @@ pageextension 50210 "Opportunity CRM Page Ext" extends "Opportunity Card"
                             'Please enter Next Follow-up Activity.');
 
                     // 4. Create new Activity
+                    RecActivity.Reset();
+                    RecActivity.SetRange("Oppurtunity No", Rec."No.");
+                    RecActivity.SetRange("Due Date", Rec."Next Follow-up Date");
+                    RecActivity.SetRange("Activity Type", RecActivity."Activity Type"::"Follow-Up");
+                    RecActivity.SetRange(Status, RecActivity.Status::Open);
+                    if RecActivity.FindFirst() then
+                        Error('An open follow-up already exists for %1 on %2.',
+                            Rec."No.", Rec."Next Follow-up Date");
                     RecActivity.Init();
 
                     // 5. Link Activity to current Opportunity
                     RecActivity."Oppurtunity No" := Rec."No.";
 
                     // 6. Activity Date
-                    RecActivity."Activity Date" := Today;
+                    RecActivity."Activity Date" :=
+                        Rec."Next Follow-up Date";
+
+                    RecActivity."Activity Type" :=
+                        RecActivity."Activity Type"::"Follow-Up";
 
                     // 7. Activity Subject
                     RecActivity.Subject :=

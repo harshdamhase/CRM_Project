@@ -1,6 +1,6 @@
 table 50216 "Customer Interaction"
 {
-    DataClassification = ToBeClassified;
+    DataClassification = CustomerContent;
 
     fields
     {
@@ -18,96 +18,122 @@ table 50216 "Customer Interaction"
             var
                 RecCustomer: Record Customer;
             begin
-                if RecCustomer.Get("Customer No") then
-                    "Customer Name" := RecCustomer.Name;
-
+                if "Customer No" = '' then
+                    "Customer Name" := ''
+                else
+                    if RecCustomer.Get("Customer No") then
+                        "Customer Name" := RecCustomer.Name;
             end;
         }
         field(3; "Customer Name"; Text[150])
         {
             Editable = false;
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
         }
-        field(4; "Contact No"; code[10])
+        field(4; "Contact No"; Code[20])
         {
-            DataClassification = ToBeClassified;
+            TableRelation = Contact."No.";
+            DataClassification = CustomerContent;
         }
         field(5; "Interaction Type"; Enum "Customer Interaction Type")
         {
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
         }
-        field(6; "Subject"; text[100])
+        field(6; "Subject"; Text[100])
         {
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
         }
-        field(7; "Interaction Date"; date)
+        field(7; "Interaction Date"; Date)
         {
             DataClassification = CustomerContent;
         }
         field(8; "Start Time"; Time)
         {
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                if ("Start Time" <> 0T) and ("End Time" <> 0T) and ("End Time" <= "Start Time") then
+                    Error('End Time must be later than Start Time.');
+            end;
         }
         field(9; "End Time"; Time)
         {
-            DataClassification = ToBeClassified;
-        }
-        field(10; "Description"; text[100])
-        {
-            DataClassification = ToBeClassified;
-        }
-        field(11; "Assigned User Id"; Code[20])
-        {
-            DataClassification = ToBeClassified;
-            TableRelation = User."Full Name";
+            DataClassification = CustomerContent;
 
+            trigger OnValidate()
+            begin
+                if ("Start Time" <> 0T) and ("End Time" <> 0T) and ("End Time" <= "Start Time") then
+                    Error('End Time must be later than Start Time.');
+            end;
+        }
+        field(10; "Description"; Text[2048])
+        {
+            DataClassification = CustomerContent;
+        }
+        field(11; "Assigned User ID"; Code[50])
+        {
+            DataClassification = CustomerContent;
+            TableRelation = User."User Name";
         }
 
         field(13; Location; Text[100])
         {
             Caption = 'Location';
+            DataClassification = CustomerContent;
         }
 
         field(14; "Related Document No."; Code[20])
         {
             Caption = 'Related Document No.';
+            DataClassification = CustomerContent;
         }
 
         field(15; "Follow-up Required"; Boolean)
         {
             Caption = 'Follow-up Required';
+            DataClassification = CustomerContent;
         }
 
         field(16; "Follow-up Date"; Date)
         {
             Caption = 'Follow-up Date';
+            DataClassification = CustomerContent;
 
             trigger OnValidate()
             begin
-                if "Follow-up Date" = 0D then
-                    Error('Follow Up date required');
+                if "Follow-up Required" and ("Follow-up Date" = 0D) then
+                    Error('Enter a follow-up date when follow-up is required.');
+                if ("Follow-up Date" <> 0D) and ("Interaction Date" <> 0D) and
+                   ("Follow-up Date" < "Interaction Date")
+                then
+                    Error('Follow-up Date cannot be earlier than Interaction Date.');
             end;
         }
 
         field(17; "Follow-up Notes"; Text[2048])
         {
+            DataClassification = CustomerContent;
             Caption = 'Follow-up Notes';
         }
 
         field(18; "Created By"; Code[50])
         {
             Caption = 'Created By';
+            DataClassification = SystemMetadata;
             Editable = false;
         }
 
         field(19; "Created DateTime"; DateTime)
         {
             Caption = 'Created DateTime';
+            DataClassification = SystemMetadata;
             Editable = false;
         }
         field(20; "CRM Interaction Type"; Enum "CRM Interaction Status")
         {
-
+            Caption = 'Interaction Status';
+            DataClassification = CustomerContent;
         }
 
     }
@@ -132,36 +158,37 @@ table 50216 "Customer Interaction"
         // Add changes to field groups here
     }
 
-    var
-        myInt: Integer;
-
     trigger OnInsert()
+    var
+        CustomerRec: Record Customer;
     begin
+        TestField("Customer No");
+        if not CustomerRec.Get("Customer No") then
+            Error('Customer %1 does not exist.', "Customer No");
+        "Customer Name" := CustomerRec.Name;
         "Created By" := CopyStr(UserId(), 1, MaxStrLen("Created By"));
         "Created DateTime" := CurrentDateTime();
-
         if "Interaction Date" = 0D then
-            "Interaction Date" := Today();
-
+            "Interaction Date" := WorkDate();
         if "Assigned User ID" = '' then
             "Assigned User ID" := CopyStr(UserId(), 1, MaxStrLen("Assigned User ID"));
-
-
+        ValidateInteractionData();
     end;
 
     trigger OnModify()
     begin
-
+        ValidateInteractionData();
     end;
 
-    trigger OnDelete()
+    local procedure ValidateInteractionData()
     begin
-
+        TestField("Customer No");
+        TestField(Subject);
+        if "Follow-up Required" then
+            TestField("Follow-up Date");
+        if ("Follow-up Date" <> 0D) and ("Follow-up Date" < "Interaction Date") then
+            Error('Follow-up Date cannot be earlier than Interaction Date.');
+        if ("Start Time" <> 0T) and ("End Time" <> 0T) and ("End Time" <= "Start Time") then
+            Error('End Time must be later than Start Time.');
     end;
-
-    trigger OnRename()
-    begin
-
-    end;
-
 }

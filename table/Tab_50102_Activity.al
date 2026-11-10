@@ -18,6 +18,12 @@ table 50102 "Activity Table"
         field(3; "Activity Date"; Date)
         {
             DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                if ("Due Date" <> 0D) and ("Due Date" < "Activity Date") then
+                    Error('Due Date cannot be earlier than Activity Date.');
+            end;
         }
 
         field(4; "Activity Type"; Enum "CRM Activity Type")
@@ -38,11 +44,18 @@ table 50102 "Activity Table"
         field(7; "Assigned To"; Code[20])
         {
             DataClassification = CustomerContent;
+            TableRelation = "Salesperson/Purchaser".Code;
         }
 
         field(8; "Due Date"; Date)
         {
             DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                if ("Due Date" <> 0D) and ("Activity Date" <> 0D) and ("Due Date" < "Activity Date") then
+                    Error('Due Date cannot be earlier than Activity Date.');
+            end;
         }
 
         field(9; Status; Enum "Activity Status")
@@ -86,6 +99,15 @@ table 50102 "Activity Table"
         {
             Clustered = true;
         }
+        key(LeadDueDate; "Lead No.", "Due Date")
+        {
+        }
+        key(OpportunityDueDate; "Oppurtunity No", "Due Date")
+        {
+        }
+        key(ActivityDate; "Activity Date")
+        {
+        }
     }
 
     trigger OnInsert()
@@ -96,19 +118,17 @@ table 50102 "Activity Table"
         if "Activity Date" = 0D then
             "Activity Date" := Today;
 
+        if Status = Status::" " then
+            Status := Status::Open;
+
         "Created By" := UserId;
         "Created Date" := Today;
 
-
-        If "Activity No." = '' then
+        if "Activity No." = '' then begin
             RecCRMSet.Get('CRM');
-
-        if RecCRMSet."Activity No" = '' then
-            Error('Activity No series Generated');
-
-        "Activity No." := NoSeriesMgt.GetNextNo(RecCRMSet."Activity No", Today, true);
-
-
+            RecCRMSet.TestField("Activity No");
+            "Activity No." := NoSeriesMgt.GetNextNo(RecCRMSet."Activity No", Today, true);
+        end;
 
     end;
 }
