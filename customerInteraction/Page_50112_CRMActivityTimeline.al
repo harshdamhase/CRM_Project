@@ -2,7 +2,8 @@ page 50112 "CRM Activity Timeline"
 {
     PageType = ListPart;
     ApplicationArea = All;
-    SourceTable = "Customer Interaction";
+    SourceTable = "Activity Timeline";
+    SourceTableView = sorting("Activity Date" = descending);
     Caption = 'Activity Timeline';
 
     layout
@@ -11,7 +12,7 @@ page 50112 "CRM Activity Timeline"
         {
             repeater(Timeline)
             {
-                field("Interaction Date"; Rec."Interaction Date")
+                field("Activity Date"; Rec."Activity Date")
                 {
                     ApplicationArea = All;
                 }
@@ -21,7 +22,7 @@ page 50112 "CRM Activity Timeline"
                     ApplicationArea = All;
                 }
 
-                field("Interaction Type"; Rec."Interaction Type")
+                field("Activity Type"; Rec."Activity Type")
                 {
                     ApplicationArea = All;
                 }
@@ -31,12 +32,12 @@ page 50112 "CRM Activity Timeline"
                     ApplicationArea = All;
                 }
 
-                field("Interaction Status"; Rec."CRM Interaction Type")
+                field("Interaction Status"; Rec."Interaction Status")
                 {
                     ApplicationArea = All;
                 }
 
-                field("Contact Name"; Rec."Customer Name")
+                field("Customer Name"; Rec."Customer Name")
                 {
                     ApplicationArea = All;
                 }
@@ -65,7 +66,10 @@ page 50112 "CRM Activity Timeline"
                 var
                     Interaction: Record "Customer Interaction";
                 begin
-                    // Interaction := Rec;
+                    if Rec."Source Type" <> Rec."Source Type"::"Customer Interaction" then
+                        Error('This timeline entry is not a customer interaction.');
+                    if not Interaction.Get(Rec."Source Entry No.") then
+                        Error('The source interaction no longer exists.');
                     Page.Run(Page::"Customer Interaction Card", Interaction);
                 end;
             }

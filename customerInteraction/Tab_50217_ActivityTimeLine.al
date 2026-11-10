@@ -7,6 +7,7 @@ table 50217 "Activity Timeline"
         field(1; EntryNo; Integer)
         {
             DataClassification = ToBeClassified;
+            AutoIncrement = true;
 
         }
         field(2; "Customer No"; Code[20])
@@ -53,6 +54,18 @@ table 50217 "Activity Timeline"
         {
             DataClassification = SystemMetadata;
         }
+        field(11; "Customer Name"; Text[150])
+        {
+            DataClassification = CustomerContent;
+        }
+        field(12; "Interaction Status"; Enum "CRM Interaction Status")
+        {
+            DataClassification = CustomerContent;
+        }
+        field(13; "Start Time"; Time)
+        {
+            DataClassification = CustomerContent;
+        }
     }
 
     keys
@@ -64,6 +77,13 @@ table 50217 "Activity Timeline"
         key(CustomerDate; "Customer No", "Activity Date")
         {
 
+        }
+        key(ActivityDate; "Activity Date")
+        {
+        }
+        key(SourceEntry; "Source Type", "Source Entry No.")
+        {
+            Unique = true;
         }
     }
 

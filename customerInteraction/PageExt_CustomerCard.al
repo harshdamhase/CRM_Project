@@ -26,6 +26,7 @@ pageextension 50212 "Customer card Ext" extends "Customer Card"
                 ApplicationArea = all;
 
                 RunObject = page "Customer Interactions List";
+                RunPageLink = "Customer No" = field("No.");
             }
             action(NewCustomerInteraction)
             {

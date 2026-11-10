@@ -206,9 +206,7 @@ table 50101 Lead
         RecCRMSetup: Record "CRM Setup Table";
         RecLead: Record Lead;
     begin
-        //duplidate 
-
-        if ("Company Name" <> '') and (Email <> ' ') then begin
+        if ("Company Name" <> '') and (Email <> '') then begin
             RecLead.Reset();
             RecLead.SetRange("Company Name", "Company Name");
             RecLead.SetRange(Email, Email);
@@ -223,21 +221,16 @@ table 50101 Lead
         "Created Date" := Today;
         "Modified By" := UserId;
         "Modified Date" := Today;
-        "Last Follow-Up Date" := Today;
-
-
-        //generate no series
-        if "Lead No." = '' then
+        if "Lead No." = '' then begin
             RecCRMSetup.Get('CRM');
+            RecCRMSetup.TestField("Lead Nos.");
+            "Lead No." := NoSeriesmgt.GetNextNo(RecCRMSetup."Lead Nos.", Today, true);
+        end;
 
-        if RecCRMSetup."Lead Nos." = '' then
-            Error('Noseries not genereted.');
-
-        "Lead No." := NoSeriesmgt.GetNextNo(RecCRMSetup."Lead Nos.", Today, true);
-
-        //default values
-        "Lead Priority" := "Lead Priority"::Medium;
-        "Lead Status" := "Lead Status"::New;
+        if "Lead Priority" = "Lead Priority"::" " then
+            "Lead Priority" := "Lead Priority"::Medium;
+        if "Lead Status" = "Lead Status"::" " then
+            "Lead Status" := "Lead Status"::New;
 
     end;
 
